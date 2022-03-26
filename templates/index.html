@@ -9,14 +9,17 @@
     <meta property="og:description" content="좋은 마을" />
     <meta property="og:image" content="https://cdn.pixabay.com/photo/2017/10/09/04/27/korea-2832422_1280.jpg" />
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
+
+
 
     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f46bff0b35df8d0936aed17e461f9021"></script>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
     <title>초미니홈피 - 팬명록</title>
 
@@ -83,6 +86,59 @@
     <p>현재기온: <span id="temp">36</span>도</p>
 </div>
 <div id="map" class ="mapCss" style="width:700px;height:800px;"></div>
+<p><em>지도를 클릭해주세요!</em></p>
+<p id="result"></p>
+
+
+<!-- <div id="my_modal"> -->
+<!--     <iframe src="/register.html" id="chat_iframe">대체 내용</iframe> -->
+<!--     <a class="modal_close_btn">닫기</a> -->
+<!-- </div> -->
+<!-- <button  id="chatBot">버튼</button> -->
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal"> -->
+<!--   Launch demo modal -->
+<!-- </button> -->
+
+<!-- Button trigger modal -->
+<!-- <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter"> -->
+<!--   Launch demo modal -->
+<!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
+          <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
+          <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+        <div class="input-group mb-3">
+          <span class="input-group-text" id="inputGroup-sizing-default">Default</span>
+          <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 <div class="mypost">
     <div class="form-floating mb-3">
         <input type="text" class="form-control" id="name" placeholder="url">
@@ -98,13 +154,25 @@
 <div class="mycards" id="comment-list">
 </div>
  <script>
-        $(document).ready(function () {
+
+     $(document).ready(function () {
             set_temp()
             show_comment()
-            setDraggable(false)
-            setZoomable(false)
+
+
+
         });
-        	var container = document.getElementById('map');
+
+
+     $('#myModal').modal({
+        backdrop: 'static',
+
+    });
+
+
+
+
+        var container = document.getElementById('map');
 		var options = {
 			center: new kakao.maps.LatLng(34.801001337155576, 126.69658150783161),
 			level: 4
@@ -112,7 +180,13 @@
 
 		var map = new kakao.maps.Map(container, options);
 
-        function setDraggable(draggable) {
+        mapHold()
+
+        function mapHold(){
+            setDraggable(false)
+            setZoomable(false)
+        }
+         function setDraggable(draggable) {
             // 마우스 드래그로 지도 이동 가능여부를 설정합니다
             map.setDraggable(draggable);
         }
@@ -120,6 +194,83 @@
              // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
             map.setZoomable(zoomable);
         }
+
+         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+
+
+            $("#myModal").modal('show');
+
+
+
+
+             // 클릭한 위도, 경도 정보를 가져옵니다
+             var latlng = mouseEvent.latLng;
+
+             var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+             message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+             var resultDiv = document.getElementById('result');
+             resultDiv.innerHTML = message;
+
+
+
+         });
+
+
+        function registerModel(){
+//             Element.prototype.setStyle = function(styles) {
+//                 for (var k in styles) this.style[k] = styles[k];
+//                 return this;
+//             };
+
+        }
+
+        function modal(id) {
+            var zIndex = 9999;
+            var modal = document.getElementById(id);
+
+            // 모달 div 뒤에 희끄무레한 레이어
+            var bg = document.createElement('div');
+            bg.setStyle({
+                position: 'fixed',
+                zIndex: zIndex,
+                left: '0px',
+                top: '0px',
+                width: '100%',
+                height: '100%',
+                overflow: 'auto',
+                // 레이어 색갈은 여기서 바꾸면 됨
+                backgroundColor: 'rgba(255,255,255,0.5)'
+
+
+            });
+            document.body.append(bg);
+
+            // 닫기 버튼 처리, 시꺼먼 레이어와 모달 div 지우기
+            modal.querySelector('.modal_close_btn').addEventListener('click', function() {
+                bg.remove();
+                modal.style.display = 'none';
+            });
+
+            modal.setStyle({
+                position: 'fixed',
+                display: 'block',
+                boxShadow: '0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)',
+
+                // 시꺼먼 레이어 보다 한칸 위에 보이기
+                zIndex: zIndex + 1,
+
+                // div center 정렬
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+                msTransform: 'translate(-50%, -50%)',
+                webkitTransform: 'translate(-50%, -50%)'
+            });
+        }
+
+
+
         function set_temp() {
             $.ajax({
                 type: "GET",
