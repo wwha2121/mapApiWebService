@@ -16,25 +16,25 @@ def home():
 
 @app.route("/mapMakingHome", methods=["POST"])
 def mapMakingHome_post():
-    family1_receive = request.form['family1_give']
-    family2_receive = request.form['family2_give']
-    family3_receive = request.form['family3_give']
-    family4_receive = request.form['family4_give']
+
+    family_receive = request.form.getlist('familyInfo_give[]')
+    lat_receive = request.form['lat_give']
+    lng_receive = request.form['lng_give']
+
 
     doc = {
-        'family1': family1_receive,
-        'family2': family2_receive,
-        'family3': family3_receive,
-        'family4': family4_receive
+        'family': family_receive,
+        'lat' : lat_receive,
+        'lng' : lng_receive
     }
-    db.guestbookDb.insert_one(doc)
+    db.familyDb.insert_one(doc)
 
-
+    return jsonify({'msg': '저장완료!'})
 
 @app.route("/mapMakingHome", methods=["GET"])
 def mapMakingHome_get():
-    print("d")
-
+    comment_list = list(db.familyDb.find({}, {'_id': False}))
+    return jsonify({'familyDb': comment_list})
 
 
 @app.route("/homework", methods=["POST"])
@@ -46,7 +46,7 @@ def homework_post():
         'name': name_receive,
         'comment': comment_receive
     }
-    db.familyDb.insert_one(doc)
+    db.guestbookDb.insert_one(doc)
 
     return jsonify({'msg': '저장완료!'})
 

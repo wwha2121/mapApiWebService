@@ -144,6 +144,27 @@
   </div>
 </div>
 
+<div class="modal fade" id="modalInfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">정보창</h5>
+
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="input-group mb-3" id="familydata1"></div>
+        <div class="input-group mb-3" id="familydata2"></div>
+        <div class="input-group mb-3" id="familydata3"></div>
+        <div class="input-group mb-3" id="familydata4"></div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="mypost">
     <div class="form-floating mb-3">
@@ -162,16 +183,13 @@
  <script>
 
      $(document).ready(function () {
-            set_temp()
-            show_comment()
 
-
-
-        });
+        show_home()
 
 
 
 
+     });
 
         var container = document.getElementById('map');
 		var options = {
@@ -217,43 +235,57 @@
          resultDiv.innerHTML = message;
 
 
+
+
+
          $("#myModal").on( "click", "#submit", function() {
 
              let family1 = $('#family1').val()
              let family2 = $('#family2').val()
              let family3 = $('#family3').val()
              let family4 = $('#family4').val()
+             let lat = latlng.getLat()
+             let lng = latlng.getLng()
 
-
+            familyInfo = [];
+            familyInfo.push(family1)
+            familyInfo.push(family2)
+            familyInfo.push(family3)
+            familyInfo.push(family4)
+            console.log(familyInfo)
             $.ajax({
                 type: 'POST',
                 url: '/mapMakingHome',
-                data: {family1_give: family1, family2_give: family2,family3_give: family3,family4_give: family4},
+                data: {familyInfo_give: familyInfo,lat_give: lat, lng_give: lng},
                 success: function (response) {
                     alert('데이터 입력완료!')
-                    window.location.reload()
+
                 }
             });
             var homePositions = [
             new kakao.maps.LatLng(latlng.getLat(), latlng.getLng()),
             new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
             ];
-            var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';
-            coffeeMarkers = []
-            createHomeMarkers(markerImageSrc,homePositions)
+            var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
 
-            alert("입력되었습니다");
+             coffeeMarkers = []
+             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo)
+
+
+
+
+
 
         });
 
 
 
- });
+    });
 
     // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
-    function createHomeMarkers(markerImageSrc,homePositions) {
+    function createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo) {
 
-     console.log(markerImageSrc,homePositions[0])
+        console.log(familyInfo)
 
         var imageSize = new kakao.maps.Size(22, 26),
             imageOptions = {
@@ -263,12 +295,12 @@
 
         // 마커이미지와 마커를 생성합니다
         var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-            marker = createMarker(homePositions[0], markerImage);
-
+            marker = createMarker(homePositions[0], markerImage,familyInfo);
+            console.log(familyInfo)
         // 생성된 마커를 커피숍 마커 배열에 추가합니다
         coffeeMarkers.push(marker);
 
-         setCoffeeMarkers(map)
+        setCoffeeMarkers(map)
 
     }
     // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
@@ -278,15 +310,50 @@
     }
 
     // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-    function createMarker(position, image) {
+    function createMarker(position, image,familyInfo) {
+        console.log(familyInfo)
         var marker = new kakao.maps.Marker({
             position: position,
-            image: image
+            image: image,
+            familyInfo : familyInfo
+        });
+         console.log(familyInfo)
+
+    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+    // 이벤트 리스너로는 클로저를 만들어 등록합니다
+    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+
+    // 마커에 mouseout 이벤트를 등록합니다
+
+        kakao.maps.event.addListener(marker, 'click', function() {
+
+            $('#familydata1').append(familyInfo[0]);
+           $('#familydata2').append(familyInfo[1]);
+           $('#familydata3').append(familyInfo[2]);
+           $('#familydata4').append(familyInfo[3]);
+
+           $('#modalInfo').modal('show')
+
+
+
+
+
+
+
+
+
         });
 
         return marker;
     }
 
+        function makeOverListener(map, marker, infowindow) {
+        return function() {
+            infowindow.open(map, marker);
+        };
+    }
+
+    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
 
     function setCoffeeMarkers(map) {
     for (var i = 0; i < coffeeMarkers.length; i++) {
@@ -296,69 +363,107 @@
 
 
 
+    function show_home() {
+        $.ajax({
+            type: "GET",
+            url: "/mapMakingHome",
+            data: {},
+            success: function (response) {
+               let rows = response['familyDb']
+               for (let i = 0; i < rows.length; i++){
+
+                    let lat = rows[i]['lat']
+                    let lng = rows[i]['lng']
+                    let familyInfo = rows[i]['family']
+                    var homePositions = [
+                    new kakao.maps.LatLng(lat, lng),
+                    new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
+                    ];
+                    var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
+                    coffeeMarkers = []
+                    createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo)
 
 
 
-
-
-        function set_temp() {
-            $.ajax({
-                type: "GET",
-                url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
-                data: {},
-                success: function (response) {
-                    $('#temp').text(response['temp'])
+//                     엄et temp_html = `<div class="card">
+//                                         <div class="card-body">
+//                                             <blockquote class="blockquote mb-0">
+//                                                 <p>${comment}</p>
+//                                                 <footer class="blockquote-footer">${name}</footer>
+//                                             </blockquote>
+//                                         </div>
+//                                     </div>`
+//                     console.log(temp_html)
+//                     $(`#comment-list`).append(temp_html)
                 }
-            })
-        }
 
-        function save_comment() {
-            let name = $('#name').val()
-            let comment = $('#comment').val()
+            }
+        });
+    }
 
 
-            $.ajax({
-                type: 'POST',
-                url: '/homework',
-                data: {name_give: name, comment_give: comment},
-                success: function (response) {
-                    alert('열렸다')
-                    window.location.reload()
+
+
+
+
+    function set_temp() {
+        $.ajax({
+            type: "GET",
+            url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
+            data: {},
+            success: function (response) {
+                $('#temp').text(response['temp'])
+            }
+        })
+    }
+
+    function save_comment() {
+        let name = $('#name').val()
+        let comment = $('#comment').val()
+
+
+        $.ajax({
+            type: 'POST',
+            url: '/homework',
+            data: {name_give: name, comment_give: comment},
+            success: function (response) {
+                alert('열렸다')
+
+            }
+        });
+
+    }
+
+    function show_comment() {
+        $.ajax({
+            type: "GET",
+            url: "/homework",
+            data: {},
+            success: function (response) {
+               let rows = response['guestbookDb']
+               for (let i = 0; i < rows.length; i++){
+                    let comment = rows[i]['comment']
+                    let name = rows[i]['name']
+
+
+
+
+                    let temp_html = `<div class="card">
+                                        <div class="card-body">
+                                            <blockquote class="blockquote mb-0">
+                                                <p>${comment}</p>
+                                                <footer class="blockquote-footer">${name}</footer>
+                                            </blockquote>
+                                        </div>
+                                    </div>`
+                    console.log(temp_html)
+                    $(`#comment-list`).append(temp_html)
                 }
-            });
 
-        }
-
-        function show_comment() {
-            $.ajax({
-                type: "GET",
-                url: "/homework",
-                data: {},
-                success: function (response) {
-                   let rows = response['guestbookDb']
-                   for (let i = 0; i < rows.length; i++){
-                        let comment = rows[i]['comment']
-                        let name = rows[i]['name']
-
-
-
-
-                        let temp_html = `<div class="card">
-                                            <div class="card-body">
-                                                <blockquote class="blockquote mb-0">
-                                                    <p>${comment}</p>
-                                                    <footer class="blockquote-footer">${name}</footer>
-                                                </blockquote>
-                                            </div>
-                                        </div>`
-                        console.log(temp_html)
-                        $(`#comment-list`).append(temp_html)
-                    }
-
-                }
-            });
-        }
-    </script>
+            }
+        });
+    }
+</script>
 
 </body>
 
