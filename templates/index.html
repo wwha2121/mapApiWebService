@@ -164,18 +164,11 @@
      $(document).ready(function () {
             set_temp()
             show_comment()
-            $(function() {
-
-    });
 
 
-            });
 
+        });
 
-//      $('#myModal').modal({
-//         backdrop: 'static',
-//
-//     });
 
 
 
@@ -203,60 +196,33 @@
             map.setZoomable(zoomable);
         }
 
-         kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
+     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
 
-            $('#myModal').modal({
-                backdrop: 'static',
-
-             });
-
-            $("#myModal").on( 'show.bs.modal',function(event) {
-            var button = $(event.relatedTarget)
-
-            let family1 = $('#family1').val()
-            let family2 = $('#family2').val()
-            let family3 = $('#family3').val()
-            let family4 = $('#family4').val()
-
-
-            $.ajax({
-                type: 'POST',
-                url: '/mapMakingHome',
-                data: {family1_give: family1, family2_give: family2,family3_give: family3,family4_give: family4},
-                success: function (response) {
-                    alert('데이터 입력완료!')
-                    window.location.reload()
-                }
-            });
-        });
-
-
-             // 클릭한 위도, 경도 정보를 가져옵니다
-             var latlng = mouseEvent.latLng;
-
-             var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-             message += '경도는 ' + latlng.getLng() + ' 입니다';
-
-             var resultDiv = document.getElementById('result');
-             resultDiv.innerHTML = message;
-
-
+         $('#myModal').modal({
+            backdrop: 'static',
 
          });
 
 
 
 
+                 // 클릭한 위도, 경도 정보를 가져옵니다
+         var latlng = mouseEvent.latLng;
+
+         var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
+         message += '경도는 ' + latlng.getLng() + ' 입니다';
+
+         var resultDiv = document.getElementById('result');
+         resultDiv.innerHTML = message;
 
 
+         $("#myModal").on( "click", "#submit", function() {
 
-        $("#myModal").on( "click", "#submit", function() {
-            alert("입력되었습니다");
-            let family1 = $('#family1').val()
-            let family2 = $('#family2').val()
-            let family3 = $('#family3').val()
-            let family4 = $('#family4').val()
+             let family1 = $('#family1').val()
+             let family2 = $('#family2').val()
+             let family3 = $('#family3').val()
+             let family4 = $('#family4').val()
 
 
             $.ajax({
@@ -268,7 +234,67 @@
                     window.location.reload()
                 }
             });
-    });
+            var homePositions = [
+            new kakao.maps.LatLng(latlng.getLat(), latlng.getLng()),
+            new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
+            ];
+            var markerImageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/category.png';
+            coffeeMarkers = []
+            createHomeMarkers(markerImageSrc,homePositions)
+
+            alert("입력되었습니다");
+
+        });
+
+
+
+ });
+
+    // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
+    function createHomeMarkers(markerImageSrc,homePositions) {
+
+     console.log(markerImageSrc,homePositions[0])
+
+        var imageSize = new kakao.maps.Size(22, 26),
+            imageOptions = {
+                spriteOrigin: new kakao.maps.Point(10, 0),
+                spriteSize: new kakao.maps.Size(36, 98)
+            };
+
+        // 마커이미지와 마커를 생성합니다
+        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
+            marker = createMarker(homePositions[0], markerImage);
+
+        // 생성된 마커를 커피숍 마커 배열에 추가합니다
+        coffeeMarkers.push(marker);
+
+         setCoffeeMarkers(map)
+
+    }
+    // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
+    function createMarkerImage(src, size, options) {
+        var markerImage = new kakao.maps.MarkerImage(src, size, options);
+        return markerImage;
+    }
+
+    // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
+    function createMarker(position, image) {
+        var marker = new kakao.maps.Marker({
+            position: position,
+            image: image
+        });
+
+        return marker;
+    }
+
+
+    function setCoffeeMarkers(map) {
+    for (var i = 0; i < coffeeMarkers.length; i++) {
+        coffeeMarkers[i].setMap(map);
+        }
+    }
+
+
 
 
 
