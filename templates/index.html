@@ -11,6 +11,7 @@
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.js"></script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
@@ -32,8 +33,8 @@
             font-family: 'Noto Serif KR', serif;
         }
         .mapCss{
-             width: 95%;
-            max-width: 600px;
+             width: 100%;
+
             margin: 20px auto 20px auto;
 
             box-shadow: 0px 0px 3px 0px black;
@@ -57,8 +58,10 @@
 
         .mypost {
             width: 95%;
-            max-width: 600px;
+            max-width: 500px;
             margin: 20px auto 20px auto;
+            object-fit: cover;
+
 
             box-shadow: 0px 0px 3px 0px black;
             padding: 20px;
@@ -69,8 +72,8 @@
         }
 
         .mycards {
-            width: 95%;
-            max-width: 500px;
+            width: 80%;
+            max-width: 300px;
             margin: auto;
         }
 
@@ -78,6 +81,26 @@
             margin-top: 10px;
             margin-bottom: 10px;
         }
+
+        .profile-pic {
+            height: 100%;
+             max-width: 300px;
+            object-fit: contain;
+        }
+
+         .custom-file > img {
+             height: 100%;
+             width: 100%;
+             object-fit: contain;
+                }
+        .custom-file {
+            height: 100%;
+            width: 100%;
+        }
+
+
+
+
     </style>
 
 </head>
@@ -87,7 +110,7 @@
     <h1>영암 마을</h1>
    <!--  <p>현재기온: <span id="temp">36</span>도</p> -->
 </div>
-<div id="map" class ="mapCss" style="width:700px;height:800px;">
+<div id="map" class ="mapCss" style="width:100% ;height:800px;">
 
 </div>
 <!-- <p><em>지도를 클릭해주세요!</em></p> -->
@@ -110,7 +133,7 @@
 <!-- Button trigger modal -->
 
 
-<!-- Modal -->
+
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -137,6 +160,15 @@
           <span class="input-group-text" id="inputGroup-sizing-default">가족이름4</span>
           <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" id="family4">
         </div>
+         <div class="custom-file">
+                    <input type="file" multiple class="custom-file-input" id="image" onchange="document.getElementById('blah').src = window.URL.createObjectURL(this.files[0])">
+                    <label class="custom-file-label" for="file">사진 선택하기</label>
+                    <img id="blah" alt="your image"  />
+         </div>
+         <div class="input-group">
+              <span class="input-group-text">방명록(사는이야기)</span>
+              <textarea class="form-control" aria-label="With textarea" id="input_text" ></textarea>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
@@ -156,13 +188,20 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3" id="familydata1"></div>
-        <div class="input-group mb-3" id="familydata2"></div>
-        <div class="input-group mb-3" id="familydata3"></div>
-        <div class="input-group mb-3" id="familydata4"></div>
+        <div class="input-group mb-3" id="familydata1">가족1:</div>
+        <div class="input-group mb-3" id="familydata2">가족2:</div>
+        <div class="input-group mb-3" id="familydata3">가족3:</div>
+        <div class="input-group mb-3" id="familydata4">가족4:</div>
+         <div class="custom-file" id = "img_print">
+         <div class="alert alert-dark" role="alert"id="input_text_info">
+               방명록 내용:
+        </div>
+
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">닫기</button>
+        <button type="button"  class="btn btn-primary" data-dismiss="modal" id="modify">수정</button>
       </div>
     </div>
   </div>
@@ -185,10 +224,11 @@
 </div> --> -->
  <script>
 
+
+
      $(document).ready(function () {
 
         show_home()
-
 
 
 
@@ -196,8 +236,8 @@
 
         var container = document.getElementById('map');
 		var options = {
-			center: new kakao.maps.LatLng(34.801001337155576, 126.69658150783161),
-			level: 4
+			center: new kakao.maps.LatLng(34.7561 ,126.5906),
+			level: 1
 		};
 
 		var map = new kakao.maps.Map(container, options);
@@ -205,8 +245,8 @@
         mapHold()
 
         function mapHold(){
-            setDraggable(false)
-            setZoomable(false)
+//             setDraggable(false)
+//             setZoomable(false)
         }
          function setDraggable(draggable) {
             // 마우스 드래그로 지도 이동 가능여부를 설정합니다
@@ -239,16 +279,42 @@
          var resultDiv = document.getElementById('result');
          resultDiv.innerHTML = message; */
 
+//
+//                      var readURL = function(input) {
+//             if (input.files && input.files[0]) {
+//                 var reader = new FileReader();
+//
+//                 reader.onload = function (e) {
+//                     $('.profile-pic').attr('src', e.target.result);
+//                 }
+//
+//                 reader.readAsDataURL(input.files[0]);
+//             }
+//         }
+
+
 
 
 
 
          $("#myModal").on( "click", "#submit", function() {
 
+
+
+
+
+
+
+
+             const form_data = new FormData();
+
+             let file = $('#image')[0].files[0]
+
              let family1 = $('#family1').val()
              let family2 = $('#family2').val()
              let family3 = $('#family3').val()
              let family4 = $('#family4').val()
+             let input_text = $('#input_text').val()
              let lat = latlng.getLat()
              let lng = latlng.getLng()
 
@@ -257,11 +323,21 @@
             familyInfo.push(family2)
             familyInfo.push(family3)
             familyInfo.push(family4)
-            console.log(familyInfo)
+
+
+            form_data.append("file_give", file)
+            form_data.append("familyInfo_give", familyInfo)
+            form_data.append("lat_give", lat)
+            form_data.append("lng_give", lng)
+            form_data.append("input_text_give", input_text)
+
             $.ajax({
-                type: 'POST',
-                url: '/mapMakingHome',
-                data: {familyInfo_give: familyInfo,lat_give: lat, lng_give: lng},
+                type: "POST",
+                url: "/mapMakingHome",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
                 success: function (response) {
                     alert('데이터 입력완료!')
 
@@ -274,7 +350,7 @@
             var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
 
              coffeeMarkers = []
-             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo)
+             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
 
 
 
@@ -288,9 +364,9 @@
     });
 
     // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
-    function createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo) {
+    function createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text ) {
 
-        console.log(familyInfo)
+
 
         var imageSize = new kakao.maps.Size(22, 26),
             imageOptions = {
@@ -300,8 +376,8 @@
 
         // 마커이미지와 마커를 생성합니다
         var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-            marker = createMarker(homePositions[0], markerImage,familyInfo);
-            console.log(familyInfo)
+            marker = createMarker(homePositions[0], markerImage,familyInfo,file,input_text );
+
         // 생성된 마커를 커피숍 마커 배열에 추가합니다
         coffeeMarkers.push(marker);
 
@@ -315,14 +391,15 @@
     }
 
     // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-    function createMarker(position, image,familyInfo) {
-        console.log(familyInfo)
+    function createMarker(position, image,familyInfo,file, input_text) {
+
         var marker = new kakao.maps.Marker({
             position: position,
             image: image,
-            familyInfo : familyInfo
+
+
         });
-         console.log(familyInfo)
+
 
     // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
     // 이벤트 리스너로는 클로저를 만들어 등록합니다
@@ -332,10 +409,24 @@
 
         kakao.maps.event.addListener(marker, 'click', function() {
 
+
+
+
+
             $('#familydata1').append(familyInfo[0]);
            $('#familydata2').append(familyInfo[1]);
            $('#familydata3').append(familyInfo[2]);
            $('#familydata4').append(familyInfo[3]);
+
+           let temp_html = `<img src="static/${file}">`
+
+
+              $('#img_print').append(temp_html)
+             $('#input_text_info').append(input_text);
+
+
+
+
 
            $('#modalInfo').modal('show')
 
@@ -344,12 +435,69 @@
                $('#familydata2').empty()
                $('#familydata3').empty()
                $('#familydata4').empty()
+               $('#img_print').empty()
             });
 
 
+             $("#modify").click(function() {
+      setTimeout(function() {
+        $('#modalInfo').modal('hide')
+        $('#myModal').modal('show')
+
+      }, 1000)
+       $("#myModal").on( "click", "#submit", function() {
 
 
 
+             const form_data = new FormData();
+
+             let file = $('#image')[0].files[0]
+
+
+             let family1 = $('#family1').val()
+             let family2 = $('#family2').val()
+             let family3 = $('#family3').val()
+             let family4 = $('#family4').val()
+             let input_text = $('#input_text').val()
+              let lat = position['Ma']
+             let lng = position['La']
+
+
+
+
+      familyInfo = [];
+            familyInfo.push(family1)
+            familyInfo.push(family2)
+            familyInfo.push(family3)
+            familyInfo.push(family4)
+
+
+            form_data.append("file_give", file)
+            form_data.append("familyInfo_give", familyInfo)
+            form_data.append("lat_give", lat)
+            form_data.append("lng_give", lng)
+            form_data.append("input_text_give", input_text)
+
+            $.ajax({
+                type: "POST",
+                url: "/mapMakingHome",
+                data: form_data,
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    alert('데이터 입력완료!')
+
+                }
+            });
+            var homePositions = [
+            new kakao.maps.LatLng(latlng.getLat(), latlng.getLng()),
+            new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
+            ];
+            var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
+
+             coffeeMarkers = []
+             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
 
 
 
@@ -357,8 +505,21 @@
 
         });
 
-        return marker;
+
+
+    });
+
+
+
+
+
+
+        });
+        return marker
+
     }
+
+
 
         function makeOverListener(map, marker, infowindow) {
         return function() {
@@ -387,6 +548,9 @@
 
                     let lat = rows[i]['lat']
                     let lng = rows[i]['lng']
+                    let file = rows[i]['file']
+                    let input_text = rows[i]['input_text']
+
                     let familyInfo = rows[i]['family']
                     var homePositions = [
                     new kakao.maps.LatLng(lat, lng),
@@ -394,25 +558,18 @@
                     ];
                     var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
                     coffeeMarkers = []
-                    createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo)
+                    createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
 
 
 
-//                     엄et temp_html = `<div class="card">
-//                                         <div class="card-body">
-//                                             <blockquote class="blockquote mb-0">
-//                                                 <p>${comment}</p>
-//                                                 <footer class="blockquote-footer">${name}</footer>
-//                                             </blockquote>
-//                                         </div>
-//                                     </div>`
-//                     console.log(temp_html)
-//                     $(`#comment-list`).append(temp_html)
+
+
                 }
 
             }
         });
-    }
+
+   }
 
 
 
@@ -469,7 +626,7 @@
                                             </blockquote>
                                         </div>
                                     </div>`
-                    console.log(temp_html)
+
                     $(`#comment-list`).append(temp_html)
                 }
 
