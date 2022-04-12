@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +10,8 @@
     <meta property="og:title" content="영암" />
     <meta property="og:description" content="좋은 마을" />
     <meta property="og:image" content="https://cdn.pixabay.com/photo/2017/10/09/04/27/korea-2832422_1280.jpg" />
+
+
 
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
@@ -17,12 +21,13 @@
 
 
 
-    <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f46bff0b35df8d0936aed17e461f9021"></script>
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+     <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f46bff0b35df8d0936aed17e461f9021"></script>
+
 
     <title>초미니홈피 - 팬명록</title>
 
@@ -188,14 +193,15 @@
         </button>
       </div>
       <div class="modal-body">
-        <div class="input-group mb-3" id="familydata1">가족1:</div>
-        <div class="input-group mb-3" id="familydata2">가족2:</div>
-        <div class="input-group mb-3" id="familydata3">가족3:</div>
-        <div class="input-group mb-3" id="familydata4">가족4:</div>
-         <div class="custom-file" id = "img_print">
-         <div class="alert alert-dark" role="alert"id="input_text_info">
-               방명록 내용:
-        </div>
+        <div class="input-group mb-3" id="familydata1"></div>
+        <div class="input-group mb-3" id="familydata2"></div>
+        <div class="input-group mb-3" id="familydata3"></div>
+        <div class="input-group mb-3" id="familydata4"></div>
+        <div class="alert alert-dark" id="input_text_info"></div>
+        <div class="custom-file" id = "img_print">
+
+
+
 
         </div>
       </div>
@@ -222,288 +228,35 @@
 </div>
 <!-- <div class="mycards" id="comment-list">
 </div> --> -->
- <script>
 
 
+    <script src="{{ url_for('static' , filename ='js/map/mapSetting.js')}}"></script>
+    <script src="{{ url_for('static' , filename ='js/map/mapHold.js')}}"></script>
+     <script src="{{ url_for('static' , filename ='js/map/showHome.js')}}"></script>
+     <script src="{{ url_for('static' , filename ='js/map/mapMarking.js')}}"></script>
+    <script src="{{ url_for('static' , filename ='js/map/mapRegister.js')}}"></script>
 
-     $(document).ready(function () {
 
-        show_home()
+    <script src="{{ url_for('static' , filename ='js/map/showInfo.js')}}"></script>
 
 
 
-     });
+    <script src="{{ url_for('static' , filename ='js/modal/modalSubmit.js')}}"></script>
 
-        var container = document.getElementById('map');
-		var options = {
-			center: new kakao.maps.LatLng(34.7561 ,126.5906),
-			level: 1
-		};
+<script>
 
-		var map = new kakao.maps.Map(container, options);
 
-        mapHold()
+    map = mapSetting()
+    mapRegister()
 
-        function mapHold(){
-//             setDraggable(false)
-//             setZoomable(false)
-        }
-         function setDraggable(draggable) {
-            // 마우스 드래그로 지도 이동 가능여부를 설정합니다
-            map.setDraggable(draggable);
-        }
-        function setZoomable(zoomable) {
-             // 마우스 휠로 지도 확대,축소 가능여부를 설정합니다
-            map.setZoomable(zoomable);
-        }
 
-     kakao.maps.event.addListener(map, 'click', function (mouseEvent) {
 
 
+    $(document).ready(function () {
 
-         $('#myModal').modal({
 
-            backdrop: 'static',
 
-         });
-
-
-
-
-                 // 클릭한 위도, 경도 정보를 가져옵니다
-         var latlng = mouseEvent.latLng;
-
-         /* var message = '클릭한 위치의 위도는 ' + latlng.getLat() + ' 이고, ';
-         message += '경도는 ' + latlng.getLng() + ' 입니다';
-
-         var resultDiv = document.getElementById('result');
-         resultDiv.innerHTML = message; */
-
-//
-//                      var readURL = function(input) {
-//             if (input.files && input.files[0]) {
-//                 var reader = new FileReader();
-//
-//                 reader.onload = function (e) {
-//                     $('.profile-pic').attr('src', e.target.result);
-//                 }
-//
-//                 reader.readAsDataURL(input.files[0]);
-//             }
-//         }
-
-
-
-
-
-
-         $("#myModal").on( "click", "#submit", function() {
-
-
-
-
-
-
-
-
-             const form_data = new FormData();
-
-             let file = $('#image')[0].files[0]
-
-             let family1 = $('#family1').val()
-             let family2 = $('#family2').val()
-             let family3 = $('#family3').val()
-             let family4 = $('#family4').val()
-             let input_text = $('#input_text').val()
-             let lat = latlng.getLat()
-             let lng = latlng.getLng()
-
-            familyInfo = [];
-            familyInfo.push(family1)
-            familyInfo.push(family2)
-            familyInfo.push(family3)
-            familyInfo.push(family4)
-
-
-            form_data.append("file_give", file)
-            form_data.append("familyInfo_give", familyInfo)
-            form_data.append("lat_give", lat)
-            form_data.append("lng_give", lng)
-            form_data.append("input_text_give", input_text)
-
-            $.ajax({
-                type: "POST",
-                url: "/mapMakingHome",
-                data: form_data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    alert('데이터 입력완료!')
-
-                }
-            });
-            var homePositions = [
-            new kakao.maps.LatLng(latlng.getLat(), latlng.getLng()),
-            new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
-            ];
-            var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
-
-             coffeeMarkers = []
-             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
-
-
-
-
-
-        });
-
-
-        this.setAttribute("disabled", "disabled");
-
-    });
-
-    // 커피숍 마커를 생성하고 커피숍 마커 배열에 추가하는 함수입니다
-    function createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text ) {
-
-
-
-        var imageSize = new kakao.maps.Size(22, 26),
-            imageOptions = {
-                spriteOrigin: new kakao.maps.Point(10, 0),
-                spriteSize: new kakao.maps.Size(36, 98)
-            };
-
-        // 마커이미지와 마커를 생성합니다
-        var markerImage = createMarkerImage(markerImageSrc, imageSize, imageOptions),
-            marker = createMarker(homePositions[0], markerImage,familyInfo,file,input_text );
-
-        // 생성된 마커를 커피숍 마커 배열에 추가합니다
-        coffeeMarkers.push(marker);
-
-        setCoffeeMarkers(map)
-
-    }
-    // 마커이미지의 주소와, 크기, 옵션으로 마커 이미지를 생성하여 리턴하는 함수입니다
-    function createMarkerImage(src, size, options) {
-        var markerImage = new kakao.maps.MarkerImage(src, size, options);
-        return markerImage;
-    }
-
-    // 좌표와 마커이미지를 받아 마커를 생성하여 리턴하는 함수입니다
-    function createMarker(position, image,familyInfo,file, input_text) {
-
-        var marker = new kakao.maps.Marker({
-            position: position,
-            image: image,
-
-
-        });
-
-
-    // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
-    // 이벤트 리스너로는 클로저를 만들어 등록합니다
-    // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
-
-    // 마커에 mouseout 이벤트를 등록합니다
-
-        kakao.maps.event.addListener(marker, 'click', function() {
-
-
-
-
-
-            $('#familydata1').append(familyInfo[0]);
-           $('#familydata2').append(familyInfo[1]);
-           $('#familydata3').append(familyInfo[2]);
-           $('#familydata4').append(familyInfo[3]);
-
-           let temp_html = `<img src="static/${file}">`
-
-
-              $('#img_print').append(temp_html)
-             $('#input_text_info').append(input_text);
-
-
-
-
-
-           $('#modalInfo').modal('show')
-
-            $('#modalInfo').on('hidden.bs.modal', function () {
-               $('#familydata1').empty()
-               $('#familydata2').empty()
-               $('#familydata3').empty()
-               $('#familydata4').empty()
-               $('#img_print').empty()
-            });
-
-
-             $("#modify").click(function() {
-      setTimeout(function() {
-        $('#modalInfo').modal('hide')
-        $('#myModal').modal('show')
-
-      }, 1000)
-       $("#myModal").on( "click", "#submit", function() {
-
-
-
-             const form_data = new FormData();
-
-             let file = $('#image')[0].files[0]
-
-
-             let family1 = $('#family1').val()
-             let family2 = $('#family2').val()
-             let family3 = $('#family3').val()
-             let family4 = $('#family4').val()
-             let input_text = $('#input_text').val()
-              let lat = position['Ma']
-             let lng = position['La']
-
-
-
-
-      familyInfo = [];
-            familyInfo.push(family1)
-            familyInfo.push(family2)
-            familyInfo.push(family3)
-            familyInfo.push(family4)
-
-
-            form_data.append("file_give", file)
-            form_data.append("familyInfo_give", familyInfo)
-            form_data.append("lat_give", lat)
-            form_data.append("lng_give", lng)
-            form_data.append("input_text_give", input_text)
-
-            $.ajax({
-                type: "POST",
-                url: "/mapMakingHome",
-                data: form_data,
-                cache: false,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    alert('데이터 입력완료!')
-
-                }
-            });
-            var homePositions = [
-            new kakao.maps.LatLng(latlng.getLat(), latlng.getLng()),
-            new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
-            ];
-            var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
-
-             coffeeMarkers = []
-             coffeeMarkers =createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
-
-
-
-
-
-        });
+      showHome(map)
 
 
 
@@ -514,126 +267,73 @@
 
 
 
-        });
-        return marker
-
-    }
 
 
 
-        function makeOverListener(map, marker, infowindow) {
-        return function() {
-            infowindow.open(map, marker);
-        };
-    }
 
-    // 인포윈도우를 닫는 클로저를 만드는 함수입니다
 
-    function setCoffeeMarkers(map) {
-    for (var i = 0; i < coffeeMarkers.length; i++) {
-        coffeeMarkers[i].setMap(map);
+
+function set_temp() {
+    $.ajax({
+        type: "GET",
+        url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
+        data: {},
+        success: function (response) {
+            $('#temp').text(response['temp'])
         }
-    }
+    })
+}
+
+function save_comment() {
+    let name = $('#name').val()
+    let comment = $('#comment').val()
+
+
+    $.ajax({
+        type: 'POST',
+        url: '/homework',
+        data: {name_give: name, comment_give: comment},
+        success: function (response) {
+            alert('열렸다')
+
+        }
+    });
+
+}
+
+function show_comment() {
+    $.ajax({
+        type: "GET",
+        url: "/homework",
+        data: {},
+        success: function (response) {
+           let rows = response['guestbookDb']
+           for (let i = 0; i < rows.length; i++){
+                let comment = rows[i]['comment']
+                let name = rows[i]['name']
 
 
 
-    function show_home() {
-        $.ajax({
-            type: "GET",
-            url: "/mapMakingHome",
-            data: {},
-            success: function (response) {
-               let rows = response['familyDb']
-               for (let i = 0; i < rows.length; i++){
 
-                    let lat = rows[i]['lat']
-                    let lng = rows[i]['lng']
-                    let file = rows[i]['file']
-                    let input_text = rows[i]['input_text']
+                let temp_html = `<div class="card">
+                                    <div class="card-body">
+                                        <blockquote class="blockquote mb-0">
+                                            <p>${comment}</p>
+                                            <footer class="blockquote-footer">${name}</footer>
+                                        </blockquote>
+                                    </div>
+                                </div>`
 
-                    let familyInfo = rows[i]['family']
-                    var homePositions = [
-                    new kakao.maps.LatLng(lat, lng),
-                    new kakao.maps.LatLng(34.79520616041439, 126.69397427636467 ),
-                    ];
-                    var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
-                    coffeeMarkers = []
-                    createHomeMarkers(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text )
-
-
-
-
-
-                }
-
+                $(`#comment-list`).append(temp_html)
             }
-        });
 
-   }
-
-
-
+        }
+    });
+}
 
 
-
-    function set_temp() {
-        $.ajax({
-            type: "GET",
-            url: "http://spartacodingclub.shop/sparta_api/weather/seoul",
-            data: {},
-            success: function (response) {
-                $('#temp').text(response['temp'])
-            }
-        })
-    }
-
-    function save_comment() {
-        let name = $('#name').val()
-        let comment = $('#comment').val()
-
-
-        $.ajax({
-            type: 'POST',
-            url: '/homework',
-            data: {name_give: name, comment_give: comment},
-            success: function (response) {
-                alert('열렸다')
-
-            }
-        });
-
-    }
-
-    function show_comment() {
-        $.ajax({
-            type: "GET",
-            url: "/homework",
-            data: {},
-            success: function (response) {
-               let rows = response['guestbookDb']
-               for (let i = 0; i < rows.length; i++){
-                    let comment = rows[i]['comment']
-                    let name = rows[i]['name']
-
-
-
-
-                    let temp_html = `<div class="card">
-                                        <div class="card-body">
-                                            <blockquote class="blockquote mb-0">
-                                                <p>${comment}</p>
-                                                <footer class="blockquote-footer">${name}</footer>
-                                            </blockquote>
-                                        </div>
-                                    </div>`
-
-                    $(`#comment-list`).append(temp_html)
-                }
-
-            }
-        });
-    }
 </script>
+
 
 </body>
 
