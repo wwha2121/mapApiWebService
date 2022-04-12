@@ -2,8 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6c014c48-5130-41c0-8975-96c7d02fc328" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/static/js/map/mapRegister.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -94,7 +92,7 @@
       <workItem from="1648191200236" duration="52225000" />
       <workItem from="1648484200763" duration="49851000" />
       <workItem from="1649065790951" duration="1129000" />
-      <workItem from="1649067550585" duration="30776000" />
+      <workItem from="1649067550585" duration="31531000" />
     </task>
     <servers />
   </component>
