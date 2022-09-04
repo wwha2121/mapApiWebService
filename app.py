@@ -6,7 +6,7 @@ app = Flask(__name__)
 from datetime import datetime
 
 from pymongo import MongoClient
-client = MongoClient('mongodb+srv://wwha2121:enemy12!@newland.mxgol.mongodb.net/myFirstDatabase?retryWrites=true&w=majority')
+client = MongoClient('mongodb://wwha2121:enemy12!@newland-shard-00-00.mxgol.mongodb.net:27017,newland-shard-00-01.mxgol.mongodb.net:27017,newland-shard-00-02.mxgol.mongodb.net:27017/?ssl=true&replicaSet=atlas-3xvsuv-shard-0&authSource=admin&retryWrites=true&w=majority')
 db = client.newland
 
 
@@ -14,7 +14,7 @@ db = client.newland
 @app.route('/')
 def home():
     return render_template('index.html')
-
+#dd
 
 # @app.route("/upload", methods=['POST'])
 # def upload():
@@ -53,24 +53,35 @@ def mapMakingHome_post():
     lat_receive = request.form['lat_give']
     lng_receive = request.form['lng_give']
 
-    file = request.files["file_give"]
+    files = request.files.getlist('file_give')
+
+    print("파일")
+    print(files)
+
+    processedFiles = []
+    processedFilesName = []
+
+    for file in files :
+        extension = file.filename.split('.')[-1]
+
+        today = datetime.now()
+        mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
+
+        filename = f'{file.filename}'
+        processedFilesName.append(filename)
+
+        save_to = f'static/{filename}'
+        file.save(save_to)
+        processedFiles.append(file)
+
+
+        # print(db.familyDb.find_one({"family": family_receive}))
+
     input_text_receive = request.form['input_text_give']
 
-    extension = file.filename.split('.')[-1]
 
-    today = datetime.now()
-    mytime = today.strftime('%Y-%m-%d-%H-%M-%S')
-
-
-    filename = f'{file.filename}'
-
-
-
-    save_to = f'static/{filename}'
-    file.save(save_to)
-    # print(db.familyDb.find_one({"family": family_receive}))
-
-
+    print(processedFiles)
+    print(processedFilesName)
     if db.familyDb.find_one({'lat' : lat_receive,'lng' : lng_receive}) != None:
         db.familyDb.delete_one({'lat' : lat_receive,'lng' : lng_receive})
 
@@ -80,7 +91,8 @@ def mapMakingHome_post():
         'lat' : lat_receive,
         'lng' : lng_receive,
         'input_text' : input_text_receive,
-        'file': f'{file.filename}'
+        # 'file': f'{file.filename}'
+        'fileName' : processedFilesName
     }
     db.familyDb.insert_one(doc)
 

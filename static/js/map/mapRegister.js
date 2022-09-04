@@ -36,7 +36,7 @@ function mapRegister(){
         modalSubmit(latlng)
 
         //
-        // this.setAttribute("disabled", "disabled");
+        this.setAttribute("disabled", "disabled");
 
     });
 

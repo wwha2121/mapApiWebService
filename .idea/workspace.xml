@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6c014c48-5130-41c0-8975-96c7d02fc328" name="Changes" comment="">
+    <list default="true" id="df6c7308-6c46-465b-a39a-1f8ff4ec7f0f" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.py" beforeDir="false" afterPath="$PROJECT_DIR$/app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/map/mapRegister.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/map/mapRegister.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/map/showHome.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/map/showHome.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/map/showInfo.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/map/showInfo.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/static/js/modal/modalSubmit.js" beforeDir="false" afterPath="$PROJECT_DIR$/static/js/modal/modalSubmit.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/index.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -80,7 +85,7 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="6c014c48-5130-41c0-8975-96c7d02fc328" name="Changes" comment="" />
+      <changelist id="df6c7308-6c46-465b-a39a-1f8ff4ec7f0f" name="Changes" comment="" />
       <created>1647943703423</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
@@ -93,9 +98,14 @@
       <workItem from="1648191200236" duration="52225000" />
       <workItem from="1648484200763" duration="49851000" />
       <workItem from="1649065790951" duration="1129000" />
-
       <workItem from="1649067550585" duration="34586000" />
-
+      <workItem from="1649862544441" duration="16828000" />
+      <workItem from="1650523353469" duration="45000" />
+      <workItem from="1650523401908" duration="1346000" />
+      <workItem from="1658980028389" duration="515000" />
+      <workItem from="1659307901174" duration="1083000" />
+      <workItem from="1660172459524" duration="55000" />
+      <workItem from="1660189593517" duration="571000" />
     </task>
     <servers />
   </component>
@@ -125,9 +135,6 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-
-
-    <SUITE FILE_PATH="coverage/homework$app.coverage" NAME="app Coverage Results" MODIFIED="1649844776590" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-
+    <SUITE FILE_PATH="coverage/homework$app.coverage" NAME="app Coverage Results" MODIFIED="1659507410524" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

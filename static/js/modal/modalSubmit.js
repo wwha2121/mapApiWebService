@@ -11,8 +11,14 @@
 
                  const form_data = new FormData();
 
-                 let file = $('#image')[0].files[0]
-
+                 let file = $('#input-multiple-image')[0].files
+                 // let file1 = $('#input-multiple-image')[0].files[1]
+                 //
+                 // console.log(file)
+                 // console.log(file1)
+                 // console.log( $('#input-multiple-image')[0].files)
+                 // console.log($('#input-multiple-image')[0].files.length)
+                 console.log(file)
                  let family1 = $('#family1').val()
                  let family2 = $('#family2').val()
                  let family3 = $('#family3').val()
@@ -27,8 +33,11 @@
                 familyInfo.push(family3)
                 familyInfo.push(family4)
 
+                for(var i = 0 ; i < file.length ; i++){
 
-                form_data.append("file_give", file)
+                    form_data.append("file_give", file[i])
+                }
+
                 form_data.append("familyInfo_give", familyInfo)
                 form_data.append("lat_give", lat)
                 form_data.append("lng_give", lng)
@@ -53,7 +62,12 @@
                 var markerImageSrc = 'https://img.icons8.com/emoji/344/house-emoji.png';
 
                  coffeeMarkers = []
-                 coffeeMarkers =mapMarking(markerImageSrc,homePositions,coffeeMarkers,familyInfo,file,input_text,map )
+                 anotherInfo = []
+                anotherInfo.push(familyInfo)
+                anotherInfo.push(file)
+                anotherInfo.push(input_text)
+
+                 coffeeMarkers =mapMarking(markerImageSrc,homePositions,coffeeMarkers,anotherInfo )
 
 
 

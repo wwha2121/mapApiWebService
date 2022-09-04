@@ -16,7 +16,7 @@ function showHome(map) {
 
                 let lat = rows[i]['lat']
                 let lng = rows[i]['lng']
-                let file = rows[i]['file']
+                let fileName = rows[i]['fileName']
                 let input_text = rows[i]['input_text']
 
                 let familyInfo = rows[i]['family']
@@ -28,7 +28,7 @@ function showHome(map) {
 
                 anotherInfo = []
                 anotherInfo.push(familyInfo)
-                anotherInfo.push(file)
+                anotherInfo.push(fileName)
                 anotherInfo.push(input_text)
 
 
